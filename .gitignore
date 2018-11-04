@@ -6,6 +6,9 @@ __pycache__/
 # C extensions
 *.so
 
+# Messenger Files
+message.html
+
 # Distribution / packaging
 .Python
 build/
