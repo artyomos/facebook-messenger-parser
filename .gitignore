@@ -7,8 +7,8 @@ __pycache__/
 *.so
 
 # Messenger Files
-message.html
-testbench.html
+*.html
+
 
 # Distribution / packaging
 .Python
