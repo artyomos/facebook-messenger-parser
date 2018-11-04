@@ -1,3 +1,10 @@
+'''
+There is no explanation for what I will do in this file...
+
+If you really want to figure it out, do the hard work I did
+'''
+
+
 from bs4 import BeautifulSoup as soup
 
 print('Nate\'s HTML Parser - Version 0.0.1')
@@ -19,12 +26,16 @@ participants = dict()
 #Create a dictionary of the participant's names
 aliases = dict()
 
-print(file.body.div.contents)
+print(file.body.div)
 #Loop through every tag in the file
-tag = file.body
-while len(tag) > 0:
-    #print (str(tag) + ' ')
-    tag = tag.div
-    print(type(tag))
-    if (tag == None):
-        break
+
+#navigate to where messenger arranges the messages
+parser = file.body.div.div.div.contents[1].contents[1]
+
+#Get the current title
+#Old Method: currentTitle = parser.div.contents[1].div.string
+currentTitle = file.title.string
+
+print(currentTitle)
+
+print(parser)
