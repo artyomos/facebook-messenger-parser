@@ -8,6 +8,7 @@ __pycache__/
 
 # Messenger Files
 message.html
+testbench.html
 
 # Distribution / packaging
 .Python
