@@ -60,8 +60,9 @@ def main(messenger_chat):
                     print("A Secondary Parse Failed... :(")
         #Parse through the reactions
         parse_reactions(payload, message)
-        #Parse through for images
-        #Others?
+        #Parse through for images and videos
+        parse_media(payload,message)
+        #Find and parse links send in the chat
     #TODO: Ignore common english words
     print(messenger_chat['words_counter'].most_common(50))
 
@@ -135,6 +136,7 @@ def parse_reactions(payload, message):
         receiving_user['reaction_count']['received_counter'].update(pure_reactions)
 
         #Giving Users
+        #TODO Rewrite for loop
         index = 0 #Sad but necessary
         for user in giving_users:
             individual = messenger_chat['members'][user]
@@ -144,6 +146,23 @@ def parse_reactions(payload, message):
 
         #print(giving_users)
 
+def parse_media(payload, message):
+    user = messenger_chat['members'][payload['user']]
+    images = message.find_all('img')
+    if images:
+        for image in images:
+            #If image is in fact a gif
+            if image['src'][-3:] == 'gif':
+                messenger_chat['gif_count'] += 1
+                user['gif_count'] += 1
+            else:
+                #Otherwise update normally one at a time
+                messenger_chat['image_count'] += 1
+                user['image_count'] += 1
+    videos = message.find_all('video')
+    if videos:
+        messenger_chat['video_count'] += len(videos)
+        user['video_count'] += len(videos)
 
 def parse_participants(members):
     """ Given a String as dictated by Facebook Messenger, parse it into the messenger chat dictionary """
@@ -176,9 +195,9 @@ def parse_participants(members):
         }
 
 #Runs the file
-#main(messenger_chat)
+main(messenger_chat)
 
-#print(messenger_chat)
+print(messenger_chat)
 '''
 file = soup('<div class="pam _3-95 _2pi0 _2lej uiBoxWhite noborder"> <div class="_3-96 _2pio _2lek _2lel">Ben Richards</div> <div class="_3-96 _2let"> <div> <div/> <div/> <div/> <div/> <div> <div> <a href="messages/JammyJimmysII_df3ac54957/photos/28126344_417494668672627_1069695574_o_417494668672627.png"> <img src="messages/JammyJimmysII_df3ac54957/photos/28126344_417494668672627_1069695574_o_417494668672627.png" class="_2yuc _3-96" /> </a> </div> </div> <div> <ul class="_tqp"> <li>😍Alexander Romios</li> <li>😍Ryan De Leon</li> </ul> </div> </div> </div> <div class="_3-94 _2lem">Feb 16, 2018 10:17pm</div> </div>', 'html.parser')
 print(file.div.li.contents)
