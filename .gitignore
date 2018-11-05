@@ -8,7 +8,7 @@ __pycache__/
 
 # Messenger Files
 *.html
-
+messenger_stats.txt
 
 # Distribution / packaging
 .Python
