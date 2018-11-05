@@ -41,12 +41,15 @@ def main(messenger_chat):
     #Iterate through all messages
     for message in messages:
         content = message.contents
-        #TODO add everything else (Images/stickers/emoji checking)
+
         payload = {
             'user':content[0].string,
             'message':content[1].div.contents[1].string,
             'date':content[2].string,
         }
+
+        #Increase User's total message count
+        messenger_chat['members'][payload['user']]['total_messages'] += 1
         #Parse through the words
         if not parse_words(payload):
             # If the message is not Null, fix the mesage with no linebreak statements
@@ -63,8 +66,7 @@ def main(messenger_chat):
         #Parse through for images and videos
         parse_media(payload,message)
         #Find and parse links send in the chat
-    #TODO: Ignore common english words
-    print(messenger_chat['words_counter'].most_common(50))
+        parse_links(payload,message)
 
 #Dictionary containing everything about the chat
 messenger_chat = {
@@ -168,9 +170,15 @@ def parse_media(payload, message):
     if audio:
         messenger_chat['audio_count'] += len(audio)
         user['audio_count'] += len(audio)
-        
+
 def parse_links(payload, message):
-    pass
+    user = messenger_chat['members'][payload['user']]
+    links = message.find_all('a')
+    if links:
+        for link in links:
+            if link['href'][:4] == 'http':
+                messenger_chat['link_count'] += 1
+                user['link_count'] += 1
 
 def parse_participants(members):
     """ Given a String as dictated by Facebook Messenger, parse it into the messenger chat dictionary """
@@ -180,6 +188,7 @@ def parse_participants(members):
     #print(members)
     for participant in members:
         messenger_chat['members'][participant] = {
+            'total_messages':0,
             'word_count':0,
             'character_count':0,
             'image_count':0,
@@ -205,5 +214,4 @@ def parse_participants(members):
 
 #Runs the file
 main(messenger_chat)
-
 print(messenger_chat)
