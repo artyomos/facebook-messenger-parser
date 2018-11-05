@@ -10,13 +10,15 @@ import re
 from collections import Counter
 
 def main(messenger_chat):
-    print('Nate\'s HTML Parser - Version 0.0.1')
-    print('\nPlease wait while the document loads... For large files this could take upwards of several minutes...')
+    print('Nate\'s Messenger (Facebook) Chat Parser - Version 1.0.0')
 
-    with open('message.html') as html:
-        file = soup(html, 'html.parser')
-
-    print('File has finished loading. Parsing data...\n')
+    try:
+        print('\nPlease wait while the document loads... For large files this could take upwards of several minutes...')
+        with open('message.html') as html:
+            file = soup(html, 'html.parser')
+        print('File has finished loading. Parsing data...\n')
+    except:
+        print('You give me a message.html to work with!')
 
     print('Parsing the file...')
 
