@@ -66,15 +66,40 @@ for message in messages:
     #print(message)
     date = content[2].string
     #print(date)
-    word_count += len(message.split())
-    character_count += len(message)
+    try:
+        word_count += len(message.split())
+        character_count += len(message)
 
-    words = re.findall(r'\w+', message)
-    #print(words)
-    words = [word.title() for word in words]
-    #print(words)
-    word_list.update(words)
-    #print('{0} on {1} said: "{2}"'.format(user,date,message))
+        words = re.findall(r'\w+', message)
+        #print(words)
+        words = [word.title() for word in words]
+
+        word_list.update(words)
+    except:
+        #print('{0} on {1} said: "{2}"'.format(user,date,message)
+        if (len(content[1].div.contents[1]) == 0):
+            pass
+        else:
+            print('Error: TimeStamp of {0}'.format(date))
+            #print(len(content[1].div.contents[1]))
+            #print(content[1].div.contents[1].contents)
+            message = ''
+            for item in content[1].div.contents[1].contents:
+                if isinstance(item, str):
+                    message += item
+            #print(type(content[1].div.contents[1].contents))
+            print(message)
+            try:
+                words = re.findall(r'\w+', message)
+                #print(words)
+                words = [word.title() for word in words]
+
+                word_list.update(words)
+            except TypeError:
+                print(message)
+
+
+
 
 print(word_count)
 print(character_count)
