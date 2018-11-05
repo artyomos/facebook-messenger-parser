@@ -1,7 +1,17 @@
-'''
-There is no explanation for what I will do in this file...
+''' Facebook Messenger Chat Parser Version 1.0.0 - Designed on 11.04.18 by
+ /$$   /$$             /$$                     /$$$$$$$                                                      /$$
+| $$$ | $$            | $$                    | $$__  $$                                                    | $$
+| $$$$| $$  /$$$$$$  /$$$$$$    /$$$$$$       | $$  \ $$ /$$   /$$  /$$$$$$   /$$$$$$   /$$$$$$   /$$$$$$  /$$$$$$
+| $$ $$ $$ |____  $$|_  $$_/   /$$__  $$      | $$$$$$$/| $$  | $$ /$$__  $$ /$$__  $$ /$$__  $$ /$$__  $$|_  $$_/
+| $$  $$$$  /$$$$$$$  | $$    | $$$$$$$$      | $$__  $$| $$  | $$| $$  \ $$| $$  \ $$| $$$$$$$$| $$  \__/  | $$
+| $$\  $$$ /$$__  $$  | $$ /$$| $$_____/      | $$  \ $$| $$  | $$| $$  | $$| $$  | $$| $$_____/| $$        | $$ /$$
+| $$ \  $$|  $$$$$$$  |  $$$$/|  $$$$$$$      | $$  | $$|  $$$$$$/| $$$$$$$/| $$$$$$$/|  $$$$$$$| $$        |  $$$$/
+|__/  \__/ \_______/   \___/   \_______/      |__/  |__/ \______/ | $$____/ | $$____/  \_______/|__/         \___/
+                                                                  | $$      | $$
+                                                                  | $$      | $$
+                                                                  |__/      |__/
 
-If you really want to figure it out, do the hard work I did
+Please see the README.md file for help in running this file. TLDR; Give put a message.html file in the same directory and it will output a text file with messenge stats
 '''
 
 
@@ -76,7 +86,7 @@ def main(messenger_chat):
     # Give a usable list in console and write to file
     with open('messenger_stats.txt', 'w') as f:
         # Header
-        f.write('File Generated Using Nate\'s Messenger Parser (https://github.com/artyomos/messenger-parser)\nVersion 0.0.1\n\n')
+        f.write('File Generated Using Nate\'s Messenger Parser (https://github.com/artyomos/messenger-parser)\nVersion 1.0.0\n\n')
 
         # Group Chat Title
         f.write('Messenger Chat: {0}\n\n'.format(currentTitle))
