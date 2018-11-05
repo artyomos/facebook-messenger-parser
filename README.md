@@ -1,8 +1,10 @@
-# Hello! And Welcome to my Facebook Messenger Chat Parser!
+# Facebook Messenger Chat Parser
 This is a basic script, designed to allow a user who downloads their Facebook data the ability to see the stats of each user in the chat they choose to download.
 
 ## How to Use
-**For simplicity, it is assumed the user understands what Python is.**
+- **It is assumed the user understands what Python is. If you do not understand the commands, don't worry I list the only commands you will need.**
+
+- **If you need help downloading the file from Facebook please check below**
 
 ### Windows
 #### Step One
@@ -107,24 +109,24 @@ Select Messenger Data's Check Mark
 ## Step Three - Get Your File
 Once your file is done, you should receive an email from Facebook.
 
-image
+![image](https://image.ibb.co/bR3mf0/filedownloaded.png)
 
 #### Download the Zip file from Facebook
 (**Warning - It could be massive depending on how many images/videos you and your friends send on Messenger**)
 
-image
 
 #### Extract the Zip File somewhere
 Anywhere will work. Just remember to navigate there using Console/Terminal.
 
 #### Select Any One of Your Numerous Chats to Parse
-I personally went with what I knew was my biggest chat. (>360k messages).
+I personally went with what I knew was my biggest chat. (>160k messages).
 
-image
+![image](https://image.ibb.co/dshe00/file.png)
+
 
 Grab that HTML file, put it in the same directory as `main.py` and run that baby.
 
-image
+![image](https://image.ibb.co/mzacnf/wait.png)
 
 # Example Output
 An Example of the output to expect from the program
