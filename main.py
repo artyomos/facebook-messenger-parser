@@ -65,26 +65,24 @@ def main(messenger_chat):
         try:
             messenger_chat['members'][payload['user']]['total_messages'] += 1
         except KeyError:
-            print("Error! Discovered Missing User! (User {0})".format(payload['user']))
+            #print("Error! Discovered Missing User! (User {0})".format(payload['user']))
             continue #Skip Loop for this Individual
-
-        # Parse through the words
-        if not parse_words(payload):
-            # If the message is not None/empty, fix the mesage with no linebreak (</br>) statements
-            if not content[1].div.contents[1]:
-                message = ''
-                for item in content[1].div.contents[1].contents:
-                    if isinstance(item, str):
-                        message += item
-                payload['message'] = message
-                if not parse_words(payload):
-                    print("A Secondary Parse Failed... :(")
+        # Parse through for images and videos and Find and parse links sent in the chat
+        if not parse_media(payload, message) and not parse_links(payload, message): #If finds media, ignore the message (usually just "User sent a photo")
+            # Parse through the words
+            if not parse_words(payload):
+                # If the message is not None/empty, fix the mesage with no linebreak (</br>) statements
+                if not content[1].div.contents[1]:
+                    message = ''
+                    for item in content[1].div.contents[1].contents:
+                        if isinstance(item, str):
+                            message += item
+                    payload['message'] = message
+                    if not parse_words(payload):
+                        print("A Secondary Parse Failed... :(")
         # Parse through the reactions
         parse_reactions(payload, message)
-        # Parse through for images and videos
-        parse_media(payload, message)
-        # Find and parse links send in the chat
-        parse_links(payload, message)
+
 
     print("Done! Analysis was successful!")
     print('\nWriting to file anaylsis results...')
@@ -226,6 +224,9 @@ def parse_media(payload, message):
     if audio:
         messenger_chat['audio_count'] += len(audio)
         user['audio_count'] += len(audio)
+    if images or audio or videos:
+        return True
+    return False
 
 
 def parse_links(payload, message):
@@ -236,6 +237,7 @@ def parse_links(payload, message):
             if link['href'][:4] == 'http':
                 messenger_chat['link_count'] += 1
                 user['link_count'] += 1
+        return True
 
 
 def parse_participants(members):
