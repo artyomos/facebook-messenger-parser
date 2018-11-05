@@ -82,7 +82,7 @@ def main(messenger_chat):
         # Group Chat Title
         f.write('Messenger Chat: {0}\n\n'.format(currentTitle))
 
-        #Stats nnnnnnnnnnnn
+        #Stats
         f.write('Total Messages: {0}\n'.format(messenger_chat['total_messages']))
         f.write('Word Count: {0}\n'.format(messenger_chat['word_count']))
         f.write('Character Count: {0}\n'.format(messenger_chat['character_count']))
@@ -92,23 +92,44 @@ def main(messenger_chat):
         f.write('Audio Files Sent: {0}\n'.format(messenger_chat['audio_count']))
         f.write('Links Sent: {0}\n'.format(messenger_chat['link_count']))
         f.write('Reactions Given: {0}\n'.format(messenger_chat['reaction_count']['given']))
-        f.write('Reaction Totals:\n')
         for reaction in messenger_chat['reaction_count']['reaction_counter']:
             f.write('\t{0}:{1}'.format(reaction, messenger_chat['reaction_count']['reaction_counter'][reaction]))
         #TODO Add other section
         f.write('\nThe 50 Most Common Words:\n')
         words = remove_common(messenger_chat['words_counter']).most_common(50)
-        for word in words:
-            f.write('\t{0}:{1}'.format(word[0], word[1]))
+        for num in range (len(words)):
+            f.write('\t{0}. {1} ({2}x)'.format(num+1, words[num][0], words[num][1]))
 
         #User Stats
-        #f.write('\n\nStats by User:')
-        #for user in
+        f.write('\n\nStats by Member:')
+        for user in messenger_chat['members']:
+            individual = messenger_chat['members'][user]
+            f.write('\n\n{0}\n\n'.format(user))
+            #Stats per user
+            f.write('Total Messages: {0}\n'.format(individual['total_messages']))
+            f.write('Word Count: {0}\n'.format(individual['word_count']))
+            f.write('Character Count: {0}\n'.format(individual['character_count']))
+            f.write('Images Sent: {0}\n'.format(individual['image_count']))
+            f.write('Gifs Sent: {0}\n'.format(individual['gif_count']))
+            f.write('Videos Sent: {0}\n'.format(individual['video_count']))
+            f.write('Audio Files Sent: {0}\n'.format(individual['audio_count']))
+            f.write('Links Sent: {0}\n'.format(individual['link_count']))
+            f.write('Reactions Given: {0}\n'.format(individual['reaction_count']['given']))
+            for reaction in individual['reaction_count']['given_counter']:
+                f.write('\t{0}:{1}'.format(reaction, individual['reaction_count']['given_counter'][reaction]))
+            f.write('\nReactions Received: {0}\n'.format(individual['reaction_count']['received']))
+            for reaction in individual['reaction_count']['received_counter']:
+                f.write('\t{0}:{1}'.format(reaction, individual['reaction_count']['received_counter'][reaction]))
+            #TODO Add other section
+            f.write('\nThe 25 Most Common Words:\n')
+            words = remove_common(individual['words_counter']).most_common(25)
+            for num in range (len(words)):
+                f.write('\t{0}. {1} ({2}x)'.format(num+1, words[num][0], words[num][1]))
 
 
 def remove_common(counter):
     #Common useless messenger words
-    common_words = ['A','An','The','I','To','And','That','Sent','Is','Photo','S','T','You','Of','Like', 'It', 'In','My','This','For','M','We','At','Was','On','So','But','Just','Be','Good','If','Ll']
+    common_words = ['A','An','The','I','To','And','That','Sent','Is','Photo','S','T','You','Of','Like', 'It', 'In','My','This','For','M','We','At','Was','On','So','But','Just','Be','Good','If','Ll','Attachment']
     for word in common_words:
         del counter[word]
     return counter
