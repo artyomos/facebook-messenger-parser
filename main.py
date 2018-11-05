@@ -9,7 +9,7 @@ from bs4 import BeautifulSoup as soup
 import re
 from collections import Counter
 
-def main():
+def main(messenger_chat):
     print('Nate\'s HTML Parser - Version 0.0.1')
     print('\nPlease wait while the document loads... For large files this could take upwards of several minutes...')
 
@@ -23,25 +23,16 @@ def main():
 
     print('Parsing the file...')
 
-    #Create a dictionary of participants
-    participants = dict()
-
-    #Create a dictionary of the participant's names
-    aliases = dict()
-
-    #print(file.body.div)
-    #Loop through every tag in the file
-
     #navigate to where messenger arranges the messages
     parser = file.body.div.div.div.contents[1].contents[1]
-    #print(parser)
+
     #Get the current title
     currentTitle = file.title.string
     print(currentTitle)
 
-    #TODO organize into dictionary
+    #Organizes the participants in their respective dictionary keys
     participants = parser.div.div.string
-    print(participants)
+    parse_participants(participants)
 
 
     messages = parser.contents[1:]
@@ -66,14 +57,14 @@ def main():
         #print(message)
         date = content[2].string
         #print(date)
-        if not parseWords(message, date):
+        if not parse_words(message, date):
             # If the message is not Null, fix the mesage with no linebreak statements
             if (len(content[1].div.contents[1]) != 0):
                 message = ''
                 for item in content[1].div.contents[1].contents:
                     if isinstance(item, str):
                         message += item
-                if not parseWords(message, date):
+                if not parse_words(message, date):
                     print("Failed :(")
 
 
@@ -82,16 +73,37 @@ def main():
     print(character_count)
 
     #TODO: Ignore common english words
-    print(word_list.most_common(50))
+    print(messenger_chat['chat_words'].most_common(50))
 
-#Counter containing all words
-word_list = Counter()
 
-def parseWords(message, date):
+#Create a dictionary of participants
+chat_participants = dict()
+
+#Dictionary containing everything about the chat
+messenger_chat = {
+'members':{},
+'chat_word_count':0,
+'chat_character_count':0,
+'chat_reaction_count':0,
+'chat_image_count'
+'chat_words':Counter(),
+}
+
+template = {
+    'word_count':0,
+    'character_count':0,
+    'reaction_count':{
+        'given':0,
+        'received':0,
+        'reaction_counter':Counter(),
+        },
+}
+#TODO change to dictionary payload
+def parse_words(message, date):
     try:
         words = re.findall(r'\w+', message)
         words = [word.title() for word in words]
-        word_list.update(words)
+        messenger_chat['chat_words'].update(words)
     except TypeError:
         if message is not None:
             print('Error: TimeStamp of {0}'.format(date))
@@ -99,8 +111,19 @@ def parseWords(message, date):
         return False
     return True
 
-
-
+def parse_participants(members):
+    #Very clever variable names I know
+    members = members.replace('Participants:', '')
+    members = members.replace(' and ', ', ')
+    members = members.strip().split(', ')
+    #print(members)
+    for participant in members:
+        messenger_chat['members'][participant] = {
+        'word_count':0,
+        'character_count':0,
+        'aliases':[],
+        }
+    print(messenger_chat)
 
 #Runs the file
-main()
+main(messenger_chat)
