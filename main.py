@@ -81,22 +81,34 @@ chat_participants = dict()
 
 #Dictionary containing everything about the chat
 messenger_chat = {
-'members':{},
-'chat_word_count':0,
-'chat_character_count':0,
-'chat_reaction_count':0,
-'chat_image_count'
-'chat_words':Counter(),
+    'members':{},
+    'chat_word_count':0,
+    'chat_character_count':0,
+    'chat_reaction_count':0,
+    'chat_image_count'
+    'chat_counter':Counter(),
 }
 
 template = {
     'word_count':0,
     'character_count':0,
+    'image_count':0,
+    'gif_count':0,
+    'video_count':0,
+    'link_count':0,
     'reaction_count':{
         'given':0,
         'received':0,
         'reaction_counter':Counter(),
         },
+    'other': {
+        'like_usage':0,
+        'emoji_usage':0,
+        'emoji_counter':Counter(),
+        'sticker_usage':0,
+        'sticker_counter':Counter(),
+    },
+    'words_counter':Counter(),
 }
 #TODO change to dictionary payload
 def parse_words(message, date):
