@@ -61,7 +61,13 @@ def main(messenger_chat):
         }
 
         # Increase User's total message count
-        messenger_chat['members'][payload['user']]['total_messages'] += 1
+        #TODO Include Missing Users
+        try:
+            messenger_chat['members'][payload['user']]['total_messages'] += 1
+        except KeyError:
+            print("Error! Discovered Missing User! (User {0})".format(payload['user']))
+            continue #Skip Loop for this Individual
+
         # Parse through the words
         if not parse_words(payload):
             # If the message is not None/empty, fix the mesage with no linebreak (</br>) statements
