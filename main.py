@@ -26,16 +26,24 @@ participants = dict()
 #Create a dictionary of the participant's names
 aliases = dict()
 
-print(file.body.div)
+#print(file.body.div)
 #Loop through every tag in the file
 
 #navigate to where messenger arranges the messages
 parser = file.body.div.div.div.contents[1].contents[1]
-
+#print(parser)
 #Get the current title
-#Old Method: currentTitle = parser.div.contents[1].div.string
 currentTitle = file.title.string
-
 print(currentTitle)
 
-print(parser)
+#TODO organize into dictionary
+participants = parser.div.div.string
+print(participants)
+
+
+messages = parser.contents[1:]
+message_count = len(messages)
+print(message_count)
+
+#for message in messages:
+    #print(message)
