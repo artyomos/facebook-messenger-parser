@@ -66,23 +66,15 @@ def main():
         #print(message)
         date = content[2].string
         #print(date)
-        try:
-            word_count += len(message.split())
-            character_count += len(message)
-
-            words = re.findall(r'\w+', message)
-            #print(words)
-            words = [word.title() for word in words]
-
-            word_list.update(words)
-        except:
+        if not parseWords(message, date):
             # If the message is not Null, fix the mesage with no linebreak statements
             if (len(content[1].div.contents[1]) != 0):
                 message = ''
                 for item in content[1].div.contents[1].contents:
                     if isinstance(item, str):
                         message += item
-                parseWords(message, date)
+                if not parseWords(message, date):
+                    print("Failed :(")
 
 
 
@@ -101,8 +93,9 @@ def parseWords(message, date):
         words = [word.title() for word in words]
         word_list.update(words)
     except TypeError:
-        print('Error: TimeStamp of {0}'.format(date))
-        print('Message: "{0}"'.format(message))
+        if message is not None:
+            print('Error: TimeStamp of {0}'.format(date))
+            print('Message: "{0}"'.format(message))
         return False
     return True
 
