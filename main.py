@@ -38,6 +38,8 @@ def main(messenger_chat):
     #Sets the chat's total messages
     messenger_chat['total_messages'] = len(messages)
 
+
+
     #Iterate through all messages
     for message in messages:
         content = message.contents
@@ -68,6 +70,32 @@ def main(messenger_chat):
         #Find and parse links send in the chat
         parse_links(payload,message)
 
+    print("Analysis was successful!")
+    print('Writing to file anaylsis results...')
+
+    #Give a usable list in console and write to file
+    with open('messenger_stats.txt', 'w') as f:
+        #Header
+        f.write('File Generated Using Nate\'s Messenger Parser (https://github.com/artyomos/messenger-parser)\nVersion 0.0.1\n\n')
+
+        # Group Chat Title
+        f.write('Messenger Chat: {0}\n\n'.format(currentTitle))
+
+        #Stats nnnnnnnnnnnn
+        f.write('Total Messages: {0}\n'.format(messenger_chat['total_messages']))
+        f.write('Word Count: {0}\n'.format(messenger_chat['word_count']))
+        f.write('Character Count: {0}\n'.format(messenger_chat['character_count']))
+        f.write('Images Sent: {0}\n'.format(messenger_chat['image_count']))
+        f.write('Gifs Sent: {0}\n'.format(messenger_chat['gif_count']))
+        f.write('Videos Sent: {0}\n'.format(messenger_chat['video_count']))
+        f.write('Audio Files Sent: {0}\n'.format(messenger_chat['audio_count']))
+        f.write('Links Sent: {0}\n'.format(messenger_chat['link_count']))
+        f.write('Reactions Given: {0}\n'.format(messenger_chat['reaction_count']['given']))
+        f.write('Reaction Totals:\n')
+        for reaction in messenger_chat['reaction_count']['reaction_counter']:
+            f.write('\t{0}:{1}'.format(reaction, messenger_chat['reaction_count']['reaction_counter'][reaction])
+        #TODO Add other section
+        f.write('\nMost Common Words:\n')
 #Dictionary containing everything about the chat
 messenger_chat = {
     'total_messages':0,
