@@ -48,7 +48,7 @@ def main(messenger_chat):
     messages = parser.contents[1:]
     messenger_chat['total_messages'] = len(messages)
 
-    print('\nParsing Chat Messages...')
+    print('\nParsing Chat Messages... ({0})'.format(len(messages)))
 
     # Iterate through all messages and parse data
     for message in messages:
@@ -158,10 +158,9 @@ def main(messenger_chat):
 
 def remove_common(counter):
     # Common useless messenger words
-    common_words = ['A', 'An', 'The', 'I', 'To', 'And', 'That', 'Sent', 'Is', 'Photo', 'S', 'T', 'You', 'Of', 'Like', 'It',
-                    'In', 'My', 'This', 'For', 'M', 'We', 'At', 'Was', 'On', 'So', 'But', 'Just', 'Be', 'Good', 'If', 'Ll', 'Attachment']
+    common_words = ['all', 'just', 'being', 'over', 'both', 'through', 'yourselves', 'its', 'before', 'herself', 'had', 'should', 'to', 'only', 'under', 'ours', 'has', 'do', 'them', 'his', 'very', 'they', 'not', 'during', 'now', 'him', 'nor', 'did', 'this', 'she', 'each', 'further', 'where', 'few', 'because', 'doing', 'some', 'are', 'our', 'ourselves', 'out', 'what', 'for', 'while', 'does', 'above', 'between', 't', 'be', 'we', 'who', 'were', 'here', 'hers', 'by', 'on', 'about', 'of', 'against', 's', 'or', 'own', 'into', 'yourself', 'down', 'your', 'from', 'her', 'their', 'there', 'been', 'whom', 'too', 'themselves', 'was', 'until', 'more', 'himself', 'that', 'but', 'don', 'with', 'than', 'those', 'he', 'me', 'myself', 'these', 'up', 'will', 'below', 'can', 'theirs', 'my', 'and', 'then', 'is', 'am', 'it', 'an', 'as', 'itself', 'at', 'have', 'in', 'any', 'if', 'again', 'no', 'when', 'same', 'how', 'other', 'which', 'you', 'after', 'most', 'such', 'why', 'a', 'off', 'i', 'yours', 'so', 'the', 'having', 'once', 'm', 'll', 'didn']
     for word in common_words:
-        del counter[word]
+        del counter[(word.capitalize())]
     return counter
 
 
