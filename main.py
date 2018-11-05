@@ -61,14 +61,15 @@ def main(messenger_chat):
         }
 
         # Increase User's total message count
-        #TODO Include Missing Users
+        # TODO Include Missing Users
         try:
             messenger_chat['members'][payload['user']]['total_messages'] += 1
         except KeyError:
             #print("Error! Discovered Missing User! (User {0})".format(payload['user']))
-            continue #Skip Loop for this Individual
+            continue  # Skip Loop for this Individual
         # Parse through for images and videos and Find and parse links sent in the chat
-        if not parse_media(payload, message) and not parse_links(payload, message): #If finds media, ignore the message (usually just "User sent a photo")
+        # If finds media, ignore the message (usually just "User sent a photo")
+        if not parse_media(payload, message) and not parse_links(payload, message):
             # Parse through the words
             if not parse_words(payload):
                 # If the message is not None/empty, fix the mesage with no linebreak (</br>) statements
@@ -82,7 +83,6 @@ def main(messenger_chat):
                         print("A Secondary Parse Failed... :(")
         # Parse through the reactions
         parse_reactions(payload, message)
-
 
     print("Done! Analysis was successful!")
     print('\nWriting to file anaylsis results...')
@@ -116,9 +116,9 @@ def main(messenger_chat):
         f.write('\nThe 50 Most Common Words:\n')
         words = remove_common(messenger_chat['words_counter']).most_common(50)
         for num in range(len(words)):
-            f.write('\t{0}. {1} ({2}x)'.format(
-                num + 1, words[num][0], words[num][1]))
-            if num % 5 == 0 and num != 0:
+            f.write('\t{0}. {1} ({2}x / {3:.2f}%)'.format(
+                num + 1, words[num][0], words[num][1], words[num][1]/messenger_chat['word_count']*100))
+            if num % 3 == 0 and num != 0:
                 f.write('\n')
 
         # User Stats
@@ -126,24 +126,29 @@ def main(messenger_chat):
         for user in messenger_chat['members']:
             individual = messenger_chat['members'][user]
             f.write('\n\n{0}\n\n'.format(user))
-            f.write('Total Messages: {0}\n'.format(
-                individual['total_messages']))
-            f.write('Word Count: {0}\n'.format(individual['word_count']))
-            f.write('Character Count: {0}\n'.format(
-                individual['character_count']))
-            f.write('Images Sent: {0}\n'.format(individual['image_count']))
-            f.write('Gifs Sent: {0}\n'.format(individual['gif_count']))
-            f.write('Videos Sent: {0}\n'.format(individual['video_count']))
-            f.write('Audio Files Sent: {0}\n'.format(
-                individual['audio_count']))
-            f.write('Links Sent: {0}\n'.format(individual['link_count']))
-            f.write('Reactions Given: {0}\n'.format(
-                individual['reaction_count']['given']))
+            f.write('Total Messages: {0} ({1:.2f}%)\n'.format(
+                individual['total_messages'], (individual['total_messages'] / messenger_chat['total_messages'] * 100)))
+            f.write('Word Count: {0} ({1:.2f}%)\n'.format(
+                individual['word_count'], (individual['word_count'] / messenger_chat['word_count'] * 100)))
+            f.write('Character Count: {0} ({1:.2f}%)\n'.format(
+                individual['character_count'], (individual['character_count'] / messenger_chat['character_count'] * 100)))
+            f.write('Images Sent: {0} ({1:.2f}%)\n'.format(
+                individual['image_count'],  (individual['image_count'] / messenger_chat['image_count'] * 100)))
+            f.write('Gifs Sent: {0} ({1:.2f}%)\n'.format(
+                individual['gif_count'], (individual['gif_count'] / messenger_chat['gif_count'] * 100)))
+            f.write('Videos Sent: {0} ({1:.2f}%)\n'.format(
+                individual['video_count'], (individual['video_count'] / messenger_chat['video_count'] * 100)))
+            f.write('Audio Files Sent: {0} ({1:.2f}%)\n'.format(
+                individual['audio_count'], (individual['audio_count'] / messenger_chat['audio_count'] * 100)))
+            f.write('Links Sent: {0} ({1:.2f}%)\n'.format(
+                individual['link_count'], (individual['link_count'] / messenger_chat['link_count'] * 100)))
+            f.write('Reactions Given: {0} ({1:.2f}%)\n'.format(
+                individual['reaction_count']['given'], (individual['reaction_count']['given'] / messenger_chat['reaction_count']['given'] * 100)))
             for reaction in individual['reaction_count']['given_counter']:
                 f.write('\t{0}:{1}'.format(
                     reaction, individual['reaction_count']['given_counter'][reaction]))
-            f.write('\nReactions Received: {0}\n'.format(
-                individual['reaction_count']['received']))
+            f.write('\nReactions Received: {0} ({1:.2f}%)\n'.format(
+                individual['reaction_count']['received'], (individual['reaction_count']['received'] / messenger_chat['reaction_count']['given'] * 100)))
             for reaction in individual['reaction_count']['received_counter']:
                 f.write('\t{0}:{1}'.format(
                     reaction, individual['reaction_count']['received_counter'][reaction]))
@@ -151,16 +156,22 @@ def main(messenger_chat):
             f.write('\nThe 25 Most Common Words:\n')
             words = remove_common(individual['words_counter']).most_common(25)
             for num in range(len(words)):
-                f.write('\t{0}. {1} ({2}x)'.format(
-                    num + 1, words[num][0], words[num][1]))
-                if num % 5 == 0 and num != 0:
+                f.write('\t{0}. {1} ({2}x / {3:.2f}%)'.format(
+                    num + 1, words[num][0], words[num][1], words[num][1]/individual['word_count']*100))
+                if num % 3 == 0 and num != 0:
                     f.write('\n')
     print('Wrote Results to messenger_stats.txt. Please check that file for details!\n\nThanks for using my program :)!')
 
 
 def remove_common(counter):
     # Common useless messenger words
-    common_words = ['all', 'just', 'being', 'over', 'both', 'through', 'yourselves', 'its', 'before', 'herself', 'had', 'should', 'to', 'only', 'under', 'ours', 'has', 'do', 'them', 'his', 'very', 'they', 'not', 'during', 'now', 'him', 'nor', 'did', 'this', 'she', 'each', 'further', 'where', 'few', 'because', 'doing', 'some', 'are', 'our', 'ourselves', 'out', 'what', 'for', 'while', 'does', 'above', 'between', 't', 'be', 'we', 'who', 'were', 'here', 'hers', 'by', 'on', 'about', 'of', 'against', 's', 'or', 'own', 'into', 'yourself', 'down', 'your', 'from', 'her', 'their', 'there', 'been', 'whom', 'too', 'themselves', 'was', 'until', 'more', 'himself', 'that', 'but', 'don', 'with', 'than', 'those', 'he', 'me', 'myself', 'these', 'up', 'will', 'below', 'can', 'theirs', 'my', 'and', 'then', 'is', 'am', 'it', 'an', 'as', 'itself', 'at', 'have', 'in', 'any', 'if', 'again', 'no', 'when', 'same', 'how', 'other', 'which', 'you', 'after', 'most', 'such', 'why', 'a', 'off', 'i', 'yours', 'so', 'the', 'having', 'once', 'm', 'll', 'didn', 't']
+    common_words = ['all', 'just', 'being', 'over', 'both', 'through', 'yourselves', 'its', 'before', 'herself', 'had', 'should', 'to', 'only', 'under', 'ours', 'has',
+     'do', 'them', 'his', 'very', 'they', 'not', 'during', 'now', 'him', 'nor', 'did', 'this', 'she', 'each', 'further', 'where', 'few', 'because', 'doing', 'some',
+      'are', 'our', 'ourselves', 'out', 'what', 'for', 'while', 'does', 'above', 'between', 't', 'be', 'we', 'who', 'were', 'here', 'hers', 'by', 'on', 'about',
+       'of', 'against', 's', 'or', 'own', 'into', 'yourself', 'down', 'your', 'from', 'her', 'their', 'there', 'been', 'whom', 'too', 'themselves', 'was', 'until',
+        'more', 'himself', 'that', 'but', 'don', 'with', 'than', 'those', 'he', 'me', 'myself', 'these', 'up', 'will', 'below', 'can', 'theirs', 'my', 'and', 'then',
+         'is', 'am', 'it', 'an', 'as', 'itself', 'at', 'have', 'in', 'any', 'if', 'again', 'no', 'when', 'same', 'how', 'other', 'which', 'you', 'after',
+          'most', 'such', 'why', 'a', 'off', 'i', 'yours', 'so', 'the', 'having', 'once', 'm', 'll', 'didn', 't']
     for word in common_words:
         del counter[(word.capitalize())]
     return counter
