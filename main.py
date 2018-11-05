@@ -73,6 +73,7 @@ def main(messenger_chat):
     print("Analysis was successful!")
     print('Writing to file anaylsis results...')
 
+
     #Give a usable list in console and write to file
     with open('messenger_stats.txt', 'w') as f:
         #Header
@@ -93,9 +94,24 @@ def main(messenger_chat):
         f.write('Reactions Given: {0}\n'.format(messenger_chat['reaction_count']['given']))
         f.write('Reaction Totals:\n')
         for reaction in messenger_chat['reaction_count']['reaction_counter']:
-            f.write('\t{0}:{1}'.format(reaction, messenger_chat['reaction_count']['reaction_counter'][reaction])
+            f.write('\t{0}:{1}'.format(reaction, messenger_chat['reaction_count']['reaction_counter'][reaction]))
         #TODO Add other section
-        f.write('\nMost Common Words:\n')
+        f.write('\nThe 50 Most Common Words:\n')
+        words = remove_common(messenger_chat['words_counter']).most_common(50)
+        for word in words:
+            f.write('\t{0}:{1}'.format(word[0], word[1]))
+
+        #User Stats
+        #f.write('\n\nStats by User:')
+        #for user in
+
+
+def remove_common(counter):
+    #Common useless messenger words
+    common_words = ['A','An','The','I','To','And','That','Sent','Is','Photo','S','T','You','Of','Like', 'It', 'In','My','This','For','M','We','At','Was','On','So','But','Just','Be','Good','If','Ll']
+    for word in common_words:
+        del counter[word]
+    return counter
 #Dictionary containing everything about the chat
 messenger_chat = {
     'total_messages':0,
