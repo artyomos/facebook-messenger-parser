@@ -68,13 +68,13 @@ def main(messenger_chat):
 
 #Dictionary containing everything about the chat
 messenger_chat = {
-    'members':{},
     'total_messages':0,
     'word_count':0,
     'character_count':0,
     'image_count':0,
     'gif_count':0,
     'video_count':0,
+    'audio_count':0,
     'link_count':0,
     'reaction_count':{
         'given':0,
@@ -88,6 +88,7 @@ messenger_chat = {
         'sticker_counter':Counter(),
     },
     'words_counter':Counter(),
+    'members':{},
 }
 
 
@@ -163,6 +164,13 @@ def parse_media(payload, message):
     if videos:
         messenger_chat['video_count'] += len(videos)
         user['video_count'] += len(videos)
+    audio = message.find_all('audio')
+    if audio:
+        messenger_chat['audio_count'] += len(audio)
+        user['audio_count'] += len(audio)
+        
+def parse_links(payload, message):
+    pass
 
 def parse_participants(members):
     """ Given a String as dictated by Facebook Messenger, parse it into the messenger chat dictionary """
@@ -177,6 +185,7 @@ def parse_participants(members):
             'image_count':0,
             'gif_count':0,
             'video_count':0,
+            'audio_count':0,
             'link_count':0,
             'reaction_count':{
                 'given':0,
@@ -198,11 +207,3 @@ def parse_participants(members):
 main(messenger_chat)
 
 print(messenger_chat)
-'''
-file = soup('<div class="pam _3-95 _2pi0 _2lej uiBoxWhite noborder"> <div class="_3-96 _2pio _2lek _2lel">Ben Richards</div> <div class="_3-96 _2let"> <div> <div/> <div/> <div/> <div/> <div> <div> <a href="messages/JammyJimmysII_df3ac54957/photos/28126344_417494668672627_1069695574_o_417494668672627.png"> <img src="messages/JammyJimmysII_df3ac54957/photos/28126344_417494668672627_1069695574_o_417494668672627.png" class="_2yuc _3-96" /> </a> </div> </div> <div> <ul class="_tqp"> <li>😍Alexander Romios</li> <li>😍Ryan De Leon</li> </ul> </div> </div> </div> <div class="_3-94 _2lem">Feb 16, 2018 10:17pm</div> </div>', 'html.parser')
-print(file.div.li.contents)
-
-ap = file
-print(ap)
-print(ap.find_next_siblings('li'))
-'''
