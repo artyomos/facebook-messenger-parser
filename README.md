@@ -1,6 +1,7 @@
 # Facebook Messenger Chat Parser
 This is a basic script, designed to allow a user who downloads their Facebook data the ability to see the stats of each user in the chat they choose to download.
 
+###NOTE: HIGHLY RECOMMENDED TO USE MY NEW JSON-BASED PARSER, way simpler and easier for users to obtain useful data.
 ## How to Use
 - **It is assumed the user understands what Python is. If you do not understand the commands, don't worry I list the only commands you will need.**
 
