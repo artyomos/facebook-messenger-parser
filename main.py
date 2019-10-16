@@ -61,7 +61,6 @@ def main(messenger_chat):
         }
 
         # Increase User's total message count
-        # TODO Include Missing Users
         try:
             messenger_chat['members'][payload['user']]['total_messages'] += 1
         except KeyError:
@@ -112,7 +111,7 @@ def main(messenger_chat):
         for reaction in messenger_chat['reaction_count']['reaction_counter']:
             f.write('\t{0}:{1}'.format(
                 reaction, messenger_chat['reaction_count']['reaction_counter'][reaction]))
-        # TODO Add other section
+
         f.write('\nThe 50 Most Common Words:\n')
         words = remove_common(messenger_chat['words_counter']).most_common(50)
         for num in range(len(words)):
@@ -152,7 +151,6 @@ def main(messenger_chat):
             for reaction in individual['reaction_count']['received_counter']:
                 f.write('\t{0}:{1}'.format(
                     reaction, individual['reaction_count']['received_counter'][reaction]))
-            # TODO Add other section
             f.write('\nThe 25 Most Common Words:\n')
             words = remove_common(individual['words_counter']).most_common(25)
             for num in range(len(words)):
